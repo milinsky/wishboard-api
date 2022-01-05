@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+
+  nginx:
+    image: nginx:latest
+    ports:
+    - 80:80
+    volumes:
+    - ./api:/var/www/project
+    - ./config/nginx:/etc/nginx/conf.d
+    - ./logs/nginx:/var/log/nginx
+    links:
+    - php-fpm
+
+  php-fpm:
+    build:
+      context: php-fpm
+    ports:
+    - 9000:9000
+    volumes:
+    - ./api:/var/www/project
+    links:
+    - database
+
+  database:
+    hostname: database
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=md5
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=test
+      - POSTGRES_DB=test
+      - DATABASE_URL=postgresql://test:password@database:5432/test
+    volumes:
+      - ./databases/postgres:/var/lib/postgresql/data
