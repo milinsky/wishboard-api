@@ -10,14 +10,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`users`')]
-#[UniqueEntity("phone")]
+#[UniqueEntity('phone')]
 #[ApiResource(iri: 'http://schema.org/User')]
 class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    private int $id;
 
     #[Assert\NotBlank]
     #[Assert\Length(min: 5, max: 100)]
@@ -29,9 +29,9 @@ class User
     private string $avatar;
 
     #[Assert\NotBlank]
-    #[Assert\Length(min: 10, max: 10)]
-    #[ORM\Column(type: 'integer')]
-    private int $phone;
+    #[Assert\Length(min: 11, max: 11)]
+    #[ORM\Column(type: 'string')]
+    private string $phone;
 
     public function getId(): ?int
     {
@@ -60,12 +60,12 @@ class User
         return $this;
     }
 
-    public function getPhone(): int
+    public function getPhone(): string
     {
         return $this->phone;
     }
 
-    public function setPhone(int $phone): self
+    public function setPhone(string $phone): self
     {
         $this->phone = $phone;
         return $this;
